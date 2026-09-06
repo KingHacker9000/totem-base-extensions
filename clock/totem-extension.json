@@ -15,7 +15,8 @@
     "publish": ["extension.clock.tick"]
   },
   "contributions": {
-    "display": [{ "id": "clock", "title": "Clock" }]
+    "display": [{ "id": "clock", "title": "Clock" }],
+    "dashboard": [{ "id": "clock", "title": "Clock" }]
   },
   "settings": {
     "timeZone": { "type": "string", "default": "local" },
