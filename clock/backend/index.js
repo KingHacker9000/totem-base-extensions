@@ -11,13 +11,11 @@ export function getClockSnapshot({ now = () => new Date(), locale = "en-CA", tim
 }
 
 export function createClockExtension(context = {}) {
+  const snapshot = () => getClockSnapshot({ ...context, ...context.settings });
   return {
     id: "clock",
-    start() {
-      return getClockSnapshot({ ...context, ...context.settings });
-    },
-    snapshot() {
-      return getClockSnapshot({ ...context, ...context.settings });
-    },
+    start: snapshot,
+    snapshot,
+    contributionSnapshot: snapshot,
   };
 }
