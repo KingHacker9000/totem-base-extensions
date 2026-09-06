@@ -1,0 +1,14 @@
+{
+  "schema": "totem.extension/v0",
+  "id": "system-status",
+  "name": "Totem System Status",
+  "version": "0.2.0",
+  "compatibility": { "totem": ">=0.2.0 <0.3.0", "sdk": ">=0.2.0 <0.3.0" },
+  "enabledByDefault": true,
+  "entrypoints": { "backend": "./backend/index.js" },
+  "lifecycle": { "start": "on-demand" },
+  "permissions": [],
+  "events": { "publish": ["extension.system-status.updated"] },
+  "contributions": { "display": [{ "id": "system-status", "title": "System Status" }] },
+  "settings": { "refreshSeconds": { "type": "number", "minimum": 1, "default": 30 } }
+}
