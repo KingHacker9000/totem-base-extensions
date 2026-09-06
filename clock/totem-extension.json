@@ -2,7 +2,23 @@
   "schema": "totem.extension/v0",
   "id": "clock",
   "name": "Totem Clock",
-  "version": "0.1.0",
+  "version": "0.2.0",
+  "compatibility": {
+    "totem": ">=0.2.0 <0.3.0",
+    "sdk": ">=0.2.0 <0.3.0"
+  },
   "enabledByDefault": true,
-  "capabilities": ["display"]
+  "entrypoints": { "backend": "./backend/index.js" },
+  "lifecycle": { "start": "on-demand" },
+  "permissions": [],
+  "events": {
+    "publish": ["extension.clock.tick"]
+  },
+  "contributions": {
+    "display": [{ "id": "clock", "title": "Clock" }]
+  },
+  "settings": {
+    "timeZone": { "type": "string", "default": "local" },
+    "hour12": { "type": "boolean", "default": false }
+  }
 }
