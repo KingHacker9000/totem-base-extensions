@@ -7,7 +7,7 @@
   "enabledByDefault": true,
   "entrypoints": { "backend": "./backend/index.js" },
   "lifecycle": { "start": "on-demand" },
-  "permissions": [],
+  "permissions": ["display.present"],
   "events": { "publish": ["extension.timer.started", "extension.timer.completed", "extension.timer.cancelled"] },
   "contributions": {
     "display": [{ "id": "timer", "title": "Timer" }],
