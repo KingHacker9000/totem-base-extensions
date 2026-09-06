@@ -1,0 +1,25 @@
+{
+  "schema": "totem.extension/v0",
+  "id": "github",
+  "name": "Totem GitHub",
+  "version": "0.2.0",
+  "compatibility": {
+    "totem": ">=0.2.0 <0.3.0",
+    "sdk": ">=0.2.0 <0.3.0"
+  },
+  "enabledByDefault": false,
+  "entrypoints": { "backend": "./backend/index.js" },
+  "lifecycle": { "start": "on-demand" },
+  "permissions": ["network.internet", "secrets.read:github-token", "mcp.register", "agent.tools.register"],
+  "events": {
+    "publish": ["extension.github.connection-changed"]
+  },
+  "contributions": {
+    "dashboard": [{ "id": "github", "title": "GitHub" }]
+  },
+  "settings": {
+    "apiBaseUrl": { "type": "string", "default": "https://api.github.com" }
+  },
+  "secrets": [{ "id": "github-token", "required": true }],
+  "mcp": [{ "id": "github", "transport": "stdio", "command": "github-mcp-server" }]
+}
