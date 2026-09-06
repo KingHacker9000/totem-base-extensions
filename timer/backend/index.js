@@ -11,7 +11,7 @@ export function createTimerExtension({ now = () => Date.now(), schedule = setTim
       const timer = timers.get(id);
       if (!timer) return;
       timers.delete(id);
-      emit("extension.timer.completed", { ...timer, status: "completed" });
+      emit("extension.timer.completed", { ...publicTimer(timer), status: "completed" });
     }, seconds * 1000);
     const timer = { id, label, seconds, startedAt, dueAt, status: "running", handle };
     timers.set(id, timer);
@@ -32,7 +32,10 @@ export function createTimerExtension({ now = () => Date.now(), schedule = setTim
     return [...timers.values()].map(publicTimer);
   }
 
-  return { id: "timer", startTimer, cancelTimer, listTimers };
+  return { id: "timer", startTimer, cancelTimer, listTimers, stop() {
+    for (const timer of timers.values()) cancelSchedule(timer.handle);
+    timers.clear();
+  } };
 }
 
 function publicTimer({ handle: _handle, ...timer }) {
