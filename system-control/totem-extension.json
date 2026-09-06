@@ -1,0 +1,20 @@
+{
+  "schema": "totem.extension/v0",
+  "id": "system-control",
+  "name": "Totem System Control",
+  "version": "0.2.0",
+  "compatibility": {
+    "totem": ">=0.2.0 <0.3.0",
+    "sdk": ">=0.2.0 <0.3.0"
+  },
+  "enabledByDefault": false,
+  "entrypoints": { "backend": "./backend/index.js" },
+  "lifecycle": { "start": "on-demand" },
+  "permissions": ["system.service", "filesystem.read"],
+  "events": {
+    "publish": ["extension.system-control.service-state-changed"]
+  },
+  "contributions": {
+    "dashboard": [{ "id": "system-control", "title": "System Control" }]
+  }
+}
