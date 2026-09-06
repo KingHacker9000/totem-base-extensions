@@ -2,7 +2,7 @@ import assert from "node:assert/strict";
 import fs from "node:fs/promises";
 import test from "node:test";
 import { validateManifest } from "@totem/extension-sdk";
-import { getClockSnapshot } from "../clock/backend/index.js";
+import { createClockExtension, getClockSnapshot } from "../clock/backend/index.js";
 import { createGitHubMcpRegistration, createGitHubToolRequest } from "../github/backend/index.js";
 import { createSpotifyAuthRequest, normalizeSpotifyPlayback, spotifyCommand } from "../spotify/backend/index.js";
 import { createReadOnlyHostSnapshot, createServiceBrokerRequest } from "../system-control/backend/index.js";
@@ -114,4 +114,34 @@ test("system-control fixture requests brokered operations rather than executing 
     uptimeSeconds: 42,
     loadAverage: [0.1, 0.2, 0.3],
   });
+});
+
+
+test("clock consumes runtime settings", () => {
+  const clock = createClockExtension({ now: () => new Date("2026-09-06T12:34:56Z"), settings: { timeZone: "UTC", hour12: false } });
+  assert.equal(clock.start().timeZone, "UTC");
+  assert.equal(clock.start().display, getClockSnapshot({ now: () => new Date("2026-09-06T12:34:56Z"), timeZone: "UTC", hour12: false }).display);
+});
+
+test("timer stop cancels all work and completion payload is serializable", () => {
+  const callbacks = [];
+  const cancelled = [];
+  const events = [];
+  const timer = createTimerExtension({
+    schedule: fn => { callbacks.push(fn); const handle = {}; handle.self = handle; return handle; },
+    cancelSchedule: handle => cancelled.push(handle),
+    emit: (type, payload) => events.push({ type, payload }),
+  });
+  timer.startTimer(1);
+  callbacks[0]();
+  assert.doesNotThrow(() => JSON.stringify(events));
+  timer.startTimer(2);
+  timer.startTimer(3);
+  timer.stop();
+  assert.equal(cancelled.length, 2);
+  assert.deepEqual(timer.listTimers(), []);
+  const count = events.length;
+  callbacks[1]();
+  callbacks[2]();
+  assert.equal(events.length, count);
 });

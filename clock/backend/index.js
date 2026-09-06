@@ -1,6 +1,7 @@
-export function getClockSnapshot({ now = () => new Date(), locale = "en-CA", timeZone } = {}) {
+export function getClockSnapshot({ now = () => new Date(), locale = "en-CA", timeZone, hour12 } = {}) {
   const instant = now();
   const options = { dateStyle: "medium", timeStyle: "medium" };
+  if (hour12 !== undefined) options.hour12 = hour12;
   if (timeZone && timeZone !== "local") options.timeZone = timeZone;
   return {
     iso: instant.toISOString(),
@@ -13,10 +14,10 @@ export function createClockExtension(context = {}) {
   return {
     id: "clock",
     start() {
-      return getClockSnapshot(context);
+      return getClockSnapshot({ ...context, ...context.settings });
     },
     snapshot() {
-      return getClockSnapshot(context);
+      return getClockSnapshot({ ...context, ...context.settings });
     },
   };
 }
