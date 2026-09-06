@@ -1,0 +1,25 @@
+{
+  "schema": "totem.extension/v0",
+  "id": "weather",
+  "name": "Totem Weather",
+  "version": "0.2.0",
+  "compatibility": {
+    "totem": ">=0.2.0 <0.3.0",
+    "sdk": ">=0.2.0 <0.3.0"
+  },
+  "enabledByDefault": true,
+  "entrypoints": { "backend": "./backend/index.js" },
+  "lifecycle": { "start": "on-demand" },
+  "permissions": ["network.internet"],
+  "events": {
+    "publish": ["extension.weather.updated", "extension.weather.failed"]
+  },
+  "contributions": {
+    "display": [{ "id": "weather", "title": "Weather" }]
+  },
+  "settings": {
+    "endpoint": { "type": "string" },
+    "location": { "type": "string" },
+    "offline": { "type": "boolean", "default": false }
+  }
+}
