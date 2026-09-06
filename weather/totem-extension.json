@@ -15,7 +15,8 @@
     "publish": ["extension.weather.updated", "extension.weather.failed"]
   },
   "contributions": {
-    "display": [{ "id": "weather", "title": "Weather" }]
+    "display": [{ "id": "weather", "title": "Weather" }],
+    "dashboard": [{ "id": "weather", "title": "Weather" }]
   },
   "settings": {
     "endpoint": { "type": "string" },
