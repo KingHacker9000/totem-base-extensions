@@ -10,7 +10,7 @@
   "enabledByDefault": true,
   "entrypoints": { "backend": "./backend/index.js" },
   "lifecycle": { "start": "on-demand" },
-  "permissions": ["network.internet"],
+  "permissions": ["network.internet", "display.present"],
   "events": {
     "publish": ["extension.weather.updated", "extension.weather.failed"]
   },
