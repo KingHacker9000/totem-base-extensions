@@ -3,11 +3,14 @@ import fs from "node:fs/promises";
 import test from "node:test";
 import { validateManifest } from "@totem/extension-sdk";
 import { getClockSnapshot } from "../clock/backend/index.js";
-import { createWeatherExtension } from "../weather/backend/index.js";
-import { createTimerExtension } from "../timer/backend/index.js";
+import { createGitHubMcpRegistration, createGitHubToolRequest } from "../github/backend/index.js";
+import { createSpotifyAuthRequest, normalizeSpotifyPlayback, spotifyCommand } from "../spotify/backend/index.js";
+import { createReadOnlyHostSnapshot, createServiceBrokerRequest } from "../system-control/backend/index.js";
 import { collectSystemStatus } from "../system-status/backend/index.js";
+import { createTimerExtension } from "../timer/backend/index.js";
+import { createWeatherExtension } from "../weather/backend/index.js";
 
-const EXTENSIONS = ["clock", "weather", "timer", "system-status"];
+const EXTENSIONS = ["clock", "weather", "timer", "system-status", "spotify", "github", "system-control"];
 
 for (const id of EXTENSIONS) {
   test(`${id} manifest validates against public SDK`, async () => {
@@ -72,4 +75,43 @@ test("system status supports deterministic host fixtures", () => {
   assert.equal(status.memory.usedBytes, 750);
   assert.equal(status.cpuCount, 2);
   assert.equal(status.platform, "test-os");
+});
+
+test("Spotify fixture exercises OAuth, playback normalization, and controls without credentials", () => {
+  const authUrl = new URL(createSpotifyAuthRequest({
+    clientId: "client",
+    redirectUri: "http://127.0.0.1/callback",
+    state: "state-1",
+    scopes: ["user-read-playback-state", "user-modify-playback-state"],
+  }));
+  assert.equal(authUrl.hostname, "accounts.spotify.com");
+  assert.equal(authUrl.searchParams.get("state"), "state-1");
+  const playback = normalizeSpotifyPlayback({ is_playing: true, progress_ms: 2500, item: { id: "track-1", name: "Song", artists: [{ name: "Artist" }] } });
+  assert.deepEqual(playback, { playing: true, progressMs: 2500, item: { id: "track-1", title: "Song", artists: ["Artist"] } });
+  assert.deepEqual(spotifyCommand("pause"), { method: "PUT", path: "/v1/me/player/pause" });
+});
+
+test("GitHub fixture keeps credentials as a secret reference and uses provider-neutral tool requests", () => {
+  const registration = createGitHubMcpRegistration({ command: "github-mcp-server", tokenSecretId: "github-token" });
+  assert.deepEqual(registration.env.GITHUB_PERSONAL_ACCESS_TOKEN, { secretRef: "github-token" });
+  assert.equal(JSON.stringify(registration).includes("ghp_"), false);
+  assert.deepEqual(createGitHubToolRequest({ owner: "openai", repo: "example", operation: "issues.list", input: { state: "open" } }), {
+    tool: "github.issues.list",
+    arguments: { owner: "openai", repo: "example", state: "open" },
+  });
+});
+
+test("system-control fixture requests brokered operations rather than executing host commands", () => {
+  assert.deepEqual(createServiceBrokerRequest({ service: "totem", action: "restart" }), {
+    broker: "system.service",
+    action: "restart",
+    service: "totem",
+  });
+  assert.deepEqual(createReadOnlyHostSnapshot({ hostname: "node-a", platform: "linux", arch: "arm64", uptimeSeconds: 42, loadAverage: [0.1, 0.2, 0.3] }), {
+    hostname: "node-a",
+    platform: "linux",
+    arch: "arm64",
+    uptimeSeconds: 42,
+    loadAverage: [0.1, 0.2, 0.3],
+  });
 });
