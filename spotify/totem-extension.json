@@ -1,0 +1,25 @@
+{
+  "schema": "totem.extension/v0",
+  "id": "spotify",
+  "name": "Totem Spotify",
+  "version": "0.2.0",
+  "compatibility": {
+    "totem": ">=0.2.0 <0.3.0",
+    "sdk": ">=0.2.0 <0.3.0"
+  },
+  "enabledByDefault": false,
+  "entrypoints": { "backend": "./backend/index.js" },
+  "lifecycle": { "start": "on-demand" },
+  "permissions": ["network.internet", "secrets.read:spotify-oauth", "display.present", "audio.play"],
+  "events": {
+    "publish": ["extension.spotify.playback-changed", "extension.spotify.auth-required"]
+  },
+  "contributions": {
+    "display": [{ "id": "now-playing", "title": "Now Playing" }],
+    "dashboard": [{ "id": "spotify", "title": "Spotify" }]
+  },
+  "settings": {
+    "market": { "type": "string", "default": "CA" }
+  },
+  "secrets": [{ "id": "spotify-oauth", "required": true }]
+}
