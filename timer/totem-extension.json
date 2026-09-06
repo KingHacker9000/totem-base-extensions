@@ -7,8 +7,11 @@
   "enabledByDefault": true,
   "entrypoints": { "backend": "./backend/index.js" },
   "lifecycle": { "start": "on-demand" },
-  "permissions": [],
+  "permissions": ["display.present"],
   "events": { "publish": ["extension.timer.started", "extension.timer.completed", "extension.timer.cancelled"] },
-  "contributions": { "display": [{ "id": "timer", "title": "Timer" }] },
+  "contributions": {
+    "display": [{ "id": "timer", "title": "Timer" }],
+    "dashboard": [{ "id": "timer", "title": "Timer" }]
+  },
   "settings": { "defaultSeconds": { "type": "number", "minimum": 1, "default": 300 } }
 }

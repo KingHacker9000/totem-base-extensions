@@ -7,8 +7,11 @@
   "enabledByDefault": true,
   "entrypoints": { "backend": "./backend/index.js" },
   "lifecycle": { "start": "on-demand" },
-  "permissions": [],
+  "permissions": ["display.present"],
   "events": { "publish": ["extension.system-status.updated"] },
-  "contributions": { "display": [{ "id": "system-status", "title": "System Status" }] },
+  "contributions": {
+    "display": [{ "id": "system-status", "title": "System Status" }],
+    "dashboard": [{ "id": "system-status", "title": "System Status" }]
+  },
   "settings": { "refreshSeconds": { "type": "number", "minimum": 1, "default": 30 } }
 }

@@ -26,7 +26,7 @@ export function createWeatherExtension({ fetchImpl = globalThis.fetch, settings 
     if (!response.ok) throw new Error(`weather request failed: ${response.status}`);
     return normalizeWeather(await response.json(), settings.location);
   }
-  return { id: "weather", start: snapshot, snapshot };
+  return { id: "weather", start: snapshot, snapshot, contributionSnapshot: snapshot };
 }
 
 export { OFFLINE_FIXTURE };

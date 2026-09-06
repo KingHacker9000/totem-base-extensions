@@ -10,12 +10,13 @@
   "enabledByDefault": true,
   "entrypoints": { "backend": "./backend/index.js" },
   "lifecycle": { "start": "on-demand" },
-  "permissions": ["network.internet"],
+  "permissions": ["network.internet", "display.present"],
   "events": {
     "publish": ["extension.weather.updated", "extension.weather.failed"]
   },
   "contributions": {
-    "display": [{ "id": "weather", "title": "Weather" }]
+    "display": [{ "id": "weather", "title": "Weather" }],
+    "dashboard": [{ "id": "weather", "title": "Weather" }]
   },
   "settings": {
     "endpoint": { "type": "string" },

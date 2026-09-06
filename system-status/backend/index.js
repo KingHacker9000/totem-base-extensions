@@ -19,13 +19,11 @@ export function collectSystemStatus({ osModule = os, now = () => new Date() } = 
 }
 
 export function createSystemStatusExtension(context = {}) {
+  const snapshot = () => collectSystemStatus(context);
   return {
     id: "system-status",
-    start() {
-      return collectSystemStatus(context);
-    },
-    snapshot() {
-      return collectSystemStatus(context);
-    },
+    start: snapshot,
+    snapshot,
+    contributionSnapshot: snapshot,
   };
 }

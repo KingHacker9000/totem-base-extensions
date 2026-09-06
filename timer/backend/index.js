@@ -32,10 +32,19 @@ export function createTimerExtension({ now = () => Date.now(), schedule = setTim
     return [...timers.values()].map(publicTimer);
   }
 
-  return { id: "timer", startTimer, cancelTimer, listTimers, stop() {
-    for (const timer of timers.values()) cancelSchedule(timer.handle);
-    timers.clear();
-  } };
+  return {
+    id: "timer",
+    startTimer,
+    cancelTimer,
+    listTimers,
+    contributionSnapshot() {
+      return { timers: listTimers(), activeCount: timers.size };
+    },
+    stop() {
+      for (const timer of timers.values()) cancelSchedule(timer.handle);
+      timers.clear();
+    },
+  };
 }
 
 function publicTimer({ handle: _handle, ...timer }) {
