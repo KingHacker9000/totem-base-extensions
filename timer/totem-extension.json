@@ -1,0 +1,14 @@
+{
+  "schema": "totem.extension/v0",
+  "id": "timer",
+  "name": "Totem Timer",
+  "version": "0.2.0",
+  "compatibility": { "totem": ">=0.2.0 <0.3.0", "sdk": ">=0.2.0 <0.3.0" },
+  "enabledByDefault": true,
+  "entrypoints": { "backend": "./backend/index.js" },
+  "lifecycle": { "start": "on-demand" },
+  "permissions": [],
+  "events": { "publish": ["extension.timer.started", "extension.timer.completed", "extension.timer.cancelled"] },
+  "contributions": { "display": [{ "id": "timer", "title": "Timer" }] },
+  "settings": { "defaultSeconds": { "type": "number", "minimum": 1, "default": 300 } }
+}
