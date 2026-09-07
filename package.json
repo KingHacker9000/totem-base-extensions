@@ -2,13 +2,19 @@
   "name": "@totem/base-extensions",
   "version": "0.2.0",
   "private": true,
+  "description": "Official open Totem extension implementations",
   "type": "module",
-  "engines": { "node": ">=22" },
+  "engines": { "node": ">=22.20.0" },
   "scripts": {
     "test": "node --test",
     "check": "node --check clock/backend/index.js && node --check weather/backend/index.js && node --check timer/backend/index.js && node --check system-status/backend/index.js && node --check spotify/backend/index.js && node --check github/backend/index.js && node --check system-control/backend/index.js && node --test"
   },
   "dependencies": {
     "@totem/extension-sdk": "github:KingHacker9000/totem-extension-sdk#916607a23a7a5905e0d675a1f451402b495ec3e1"
-  }
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/KingHacker9000/totem-base-extensions.git"
+  },
+  "homepage": "https://github.com/KingHacker9000/totem-base-extensions#readme"
 }
