@@ -7,7 +7,8 @@
   "engines": { "node": ">=22.20.0" },
   "scripts": {
     "test": "node --test",
-    "check": "node --check clock/backend/index.js && node --check weather/backend/index.js && node --check timer/backend/index.js && node --check system-status/backend/index.js && node --check spotify/backend/index.js && node --check github/backend/index.js && node --check system-control/backend/index.js && node --test"
+    "integrity": "node scripts/distribution-integrity.mjs",
+    "check": "node --check clock/backend/index.js && node --check weather/backend/index.js && node --check timer/backend/index.js && node --check system-status/backend/index.js && node --check spotify/backend/index.js && node --check github/backend/index.js && node --check system-control/backend/index.js && npm run integrity && node --test"
   },
   "dependencies": {
     "@totem/extension-sdk": "github:KingHacker9000/totem-extension-sdk#916607a23a7a5905e0d675a1f451402b495ec3e1"
