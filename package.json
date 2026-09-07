@@ -10,6 +10,5 @@
   },
   "dependencies": {
     "@totem/extension-sdk": "github:KingHacker9000/totem-extension-sdk#916607a23a7a5905e0d675a1f451402b495ec3e1"
-  },
-  "license": "MIT"
+  }
 }
